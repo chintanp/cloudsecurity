@@ -89,9 +89,18 @@ The users with the role above should be able to use the AWS Console to spin-up t
 * After the parent instance is created, goto Actions -> Instance Settings -> Attach/Replace IAM Role and specify the role created above. 
 * This parent instance now, does not need the Access Keys to spin up new instances (child) programmatically. It can perpetually (as long as the IAM role is attached) spin up *only* the specified type of instances. This internally uses the AWS STS to give the parent instance credentials to generate child instances. 
 
+> Further, if the IAM role needs to be passed to a child of a resource, like a docker container, then the following policy has to be added to the above: 
+
+```
+    {
+      "Effect": "Allow",
+      "Action": "iam:PassRole",
+      "Resource": "*"
+    }
+```
 
 #### References 
 
 * [Limiting Allowed AWS Instance Type With IAM Policy](https://blog.vizuri.com/limiting-allowed-aws-instance-type-with-iam-policy)
 * [Amazon EC2: Allows Launching EC2 Instances in a Specific Subnet, Programmatically and in the Console](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_ec2_instances-subnet.html)
-
+* [Granting Permission to Launch EC2 Instances with IAM Roles (PassRole Permission)](https://aws.amazon.com/blogs/security/granting-permission-to-launch-ec2-instances-with-iam-roles-passrole-permission/)
